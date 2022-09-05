@@ -1,0 +1,77 @@
+<%- include('./../layouts/header.ejs', {title:elemento.nombre}) -%>
+
+      <section class="jumbotron">
+        <div class="container">
+            <div class="col-md-8 py-6">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" value="<%= elemento.nombre %>" id="nombre" readonly>
+            </div>
+            
+            <div class="col-md-8 py-6">
+              <label for="apellido" class="form-label">Apellido</label>
+              <input type="text" class="form-control" value="<%= elemento.apellido %>" readonly>
+            </div>
+
+            <div class="col-md-8 py-6">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="text" class="form-control" value="<%= elemento.password %>" readonly>
+            </div>
+
+            <div class="col-md-8 py-6">
+              <label for="email" class="form-label">Email</label>
+              <input type="text" class="form-control" value="<%= elemento.email %>" readonly>
+            </div>
+
+            <div class="col-md-8 py-6">
+              <label for="telefono" class="form-label">Telefono</label>
+              <input type="text" class="form-control" value="<%= elemento.telefono %>" readonly>
+            </div>
+                          
+            <input type="hidden" name="id" id="id" value="<%= elemento.id %>"readonly>             
+                     
+       
+          <div class="row justify-content-between">
+            <a href="javascript:history.back()" class="btn btn-secondary" name="atras" id="atras">Atras</a>
+            <a href="/edit/<%= elemento.id %>" class="btn btn-primary">Editar</a>
+         
+            <button class="btn btn-danger btn-sm" name="eliminar" id="eliminar">Eliminar</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const $eliminar = document.getElementById('eliminar');
+
+      eliminar.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        let id = document.getElementById('id').value;
+        let nombre = document.getElementById('nombre').value;
+
+        const data = await destroy(id);
+        console.log(data);
+        if (data.status == 200) {
+          alert(nombre + ' eliminado correctamente')
+          window.location.href = '/';
+        } else {
+          alert(data.error[0].msg)
+        }
+      })
+
+      const destroy = async (id) => {
+        try {
+          const request = await fetch('http://localhost:3000/'+id,{
+            method:"DELETE",
+            headers : {
+              "Content-Type": "application/json",
+            }
+          })
+          const datos = await request.json()
+          return datos;
+        } catch (error) {
+          return error;
+        }
+      }
+    </script>
+<%- include('./../layouts/footer.ejs') -%>

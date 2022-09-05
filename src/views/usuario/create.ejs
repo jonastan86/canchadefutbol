@@ -1,0 +1,90 @@
+<%- include('./../layouts/header.ejs', {title:'Crear usuario'}) -%>
+
+      <section class="jumbotron">
+        <div class="container">
+          <form class="row g-3 needs-validation" method="POST" action="/api/store" novalidate>
+            
+            <div class="col-md-8 py-4">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" name="nombre" id="nombre" value="" required>
+            </div>
+          
+            <div class="col-md-8 py-4">
+              <label for="apellido" class="form-label">Apellido</label>
+              <input type="text" class="form-control" name="apellido" id="apellido" value="" required>
+            </div>
+            
+            <div class="col-md-8 py-4">
+              <label for="password class="form-label">Contraseña</label>
+              <input type="text" class="form-control" name="password" id= "password" value="" required>
+            </div> 
+            
+            <div class="col-md-8 py-4">
+              <label for="email" class="form-label">email</label>
+              <input type="text" class="form-control" name="email" id="email" value="" required>
+            </div>
+          
+            <div class="col-md-8 py-4">
+              <label for="telefono" class="form-label">telefono</label>
+              <input type="number" class="form-control" name="telefono" id="telefono" value="" required>
+            </div>
+            </form>
+            <div class="col-8">
+              <div class="row justify-content-between">
+                <a href="javascript:history.back()" class="btn btn-secondary" name="boton" id="botonn">Atras</a>
+                <button class="btn btn-primary" type="submit" id="boton">Enviar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script>
+      const $boton = document.getElementById('boton');
+
+      boton.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        let nombre = document.getElementById('nombre').value;
+        let apellido = document.getElementById('apellido').value;
+        let password = document.getElementById('password').value;
+        let email = document.getElementById('email').value;
+        let telefono = document.getElementById('telefono').value
+
+        const data = await store(nombre,apellido,password,email,telefono);
+        console.log(data);
+        if (data.status == 200) {
+          alert(nombre + ' ' + data.msg)
+          window.location.href = '/';
+        } else {
+          alert(data.error[0].msg)
+        }
+      })
+
+      const store = async (nombre,apellido,password,email,telefono) => {
+        try {
+          const request = await fetch('http://localhost:3000/store',{
+            method:"POST",
+            body: JSON.stringify({
+              nombre,
+              apellido,
+              password,
+              email,
+              telefono
+            }),
+            headers : {
+              "Content-Type": "application/json",
+            }
+          })
+          const datos = await request.json()
+          return datos;
+        } catch (error) {
+          return error;
+        }
+      }
+    </script>
+<%- include('./../layouts/footer.ejs') -%>

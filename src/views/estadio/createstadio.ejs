@@ -1,0 +1,71 @@
+<%- include('./../layouts/header.ejs', {title:'Agregar Cancha'}) -%>
+
+      <section class="jumbotron">
+        <div class="container">
+          <form class="row g-3 needs-validation" method="POST" action="/api/store" novalidate>
+            
+            <div class="col-md-8 py-4">
+              <label for="cantidadjugadores" class="form-label">Cantidad de Jugadores</label>
+              <input type="number" class="form-control" name="cantidadjugadores" id="cantidadjugadores" value="" required>
+            </div>
+          
+            <div class="col-md-8 py-4">
+              <label for="canchanumero" class="form-label">Cancha numero</label>
+              <input type="number" class="form-control" name="canchanumero" id="canchanumero" value="" required>
+            </div>
+                    
+            </form>
+            <div class="col-8">
+              <div class="row justify-content-between">
+                <a href="javascript:history.back()" class="btn btn-secondary" name="boton" id="botonn">Atras</a>
+                <button class="btn btn-primary" type="submit" id="boton">Enviar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script>
+      const $boton = document.getElementById('boton');
+
+      boton.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        let cantidadjugadores = document.getElementById('cantidadjugadores').value;
+        let canchanumero = document.getElementById('canchanumero').value;
+        
+
+        const data = await storestadio(cantidadjugadores,canchanumero);
+        console.log(data);
+        if (data.status == 200) {
+          alert(canchanumero + ' ' + data.msg)
+          window.location.href = '/';
+        } else {
+          alert(data.error[0].msg)
+        }
+      })
+
+      const storestadio = async (cantidadjugadores,canchanumero) => {
+        try {
+          const request = await fetch('http://localhost:3000/storestadio',{
+            method:"POST",
+            body: JSON.stringify({
+              cantidadjugadores,
+              canchanumero
+            }),
+            headers : {
+              "Content-Type": "application/json",
+            }
+          })
+          const datos = await request.json()
+          return datos;
+        } catch (error) {
+          return error;
+        }
+      }
+    </script>
+<%- include('./../layouts/footer.ejs') -%>

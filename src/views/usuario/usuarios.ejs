@@ -1,0 +1,66 @@
+<%- include('./../layouts/header.ejs', {title:'Futbol con amigos'}) -%>
+
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">Maradona Futbol</h1>
+          <div class="row justify-content-between">
+                      <a href="/create" class="btn btn-sm btn-success">Crear Usuario</a>
+          </div>
+        </div>
+      </section>
+     
+    
+
+      <div class="album py-5 bg-light">
+        <div class="container">
+          <div class="row justify-content-between">
+            <h4>Horario de partidos</h4>
+            
+          </div>
+          
+
+
+          
+          <div class="row">
+            <table class="table table-respondive table-hover text-center">
+              
+              
+              <thead>
+                <tr>
+                  
+                  <th>Nombre</th>
+                  <th>Apellido</th>
+                  <th>Contraseña</th>
+                  <th>Email</th>
+                  <th>Telefono</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <% usuario.forEach(element => { %>
+                  
+                  
+                  <tr>
+                   
+                    <td><%= element.nombre %></td>
+                    <td><%= element.apellido %></td>
+                    <td><%= element.password %></td>
+                    <td><%= element.email %></td>
+                    <td><%= element.telefono %></td>
+                   
+                    <td>
+                      <a class="btn btn-primary" href="/show/<%= element.id %>">Ver detalles</a>
+                    </td>
+                  </tr>
+                  <% }); %>
+
+                     
+                    
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+<%- include('./../layouts/footer.ejs') -%>
